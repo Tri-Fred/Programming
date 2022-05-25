@@ -10,11 +10,14 @@
 
             setInterval(mainloop, 1000 / 50);
         }
-        
-        
+        var playerXPOS = 0;
+        var playerYPOS = 0;
+        const PLAYER_SIZE = 20;
+
         function mainloop() {
-            colorRect(0,0,canvas.width,canvas.height,'black'); // bg
-            colorRect(20,20,canvas.width,canvas.height,'red'); // bg
+            colorRect (0,0,canvas.width,canvas.height,'black'); // bg
+            colorRect (playerXPOS,playerYPOS,PLAYER_SIZE,PLAYER_SIZE,'red');
+
         }
         
          function colorRect(x,y,w,h,c){
