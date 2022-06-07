@@ -1,0 +1,34 @@
+<!doctype html>
+<body>
+    <canvas id="gameCanvas" width="600" height="600"></canvas>
+    <script>
+        var canvas, canvasContext;
+
+        window.onload = function() {
+            canvas = document.getElementById('gameCanvas');
+            canvasContext = canvas.getContext('2d');
+
+            setInterval(mainloop, 1000 / 50);
+            
+        }    
+        
+            var ball = new Image ();
+            ball.src = 'images/ball.png';
+
+        function mainloop() {
+            colorRect(0,0,canvas.width,canvas.height,'black'); // bg
+            drawImg(ball,100,50,18,29) //ball
+    
+        }
+        
+         function colorRect(x,y,w,h,c){
+            canvasContext.fillStyle = c;
+            canvasContext.fillRect(x,y,w,h);
+        }
+        function drawImg(src,x,y,w,h,);{
+            canvasContext.drawImg (src,x,y,w,h);
+        }
+
+    
+    </script>
+</body>
