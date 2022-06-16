@@ -11,24 +11,36 @@
             setInterval(mainloop, 1000 / 50);
             
         }    
-        
+        var ballXpos = 0;
+        var ballYpos = 0;
+        const BALL_SIZE = 100;
+        var ballXspeed = 5;
+        var ballYspeed = 5;
+
         var ball = new Image ();
             ball.src = 'images/ball.png';
 
         function mainloop() {
-            colorRect(0,0,canvas.width,canvas.height,'orange'); // bg
-            drawImg(ball ,100,50,50,50)
+            colorRect(0,0,canvas.width,canvas.height,'green'); // bg
+            drawImg(ball ,ballXpos,ballYpos,BALL_SIZE,BALL_SIZE);
     
+            ballMove();
         }
         
          function colorRect(x,y,w,h,c){
             canvasContext.fillStyle = c;
             canvasContext.fillRect(x,y,w,h);
         }
-        function drawImg(src,x,y,w,h,){
+        
+            function drawImg(src,x,y,w,h,){
         canvasContext.drawImage (src,x,y,w,h);
+
         }
 
+            function ballMove() {
+                ballXpos += ballXspeed;
+                ballYpos += ballYspeed;
+    }
     
     </script>
 </body>
