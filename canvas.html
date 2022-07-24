@@ -1,6 +1,13 @@
 <!doctype html>
+
+
+
+
+<title>Game</title>
+
+
 <body>
-    <canvas id="gameCanvas" width="600" height="600"></canvas>
+    <canvas id="gameCanvas" width="1910" height="930"></canvas> 
     <script>
         var canvas, canvasContext;
 
@@ -10,33 +17,72 @@
 
             setInterval(mainloop, 1000 / 50);
             
-        }    
-        var ballXpos = 0;
-        var ballYpos = 0;
+        }   
+        //opposition goalie
+        var enemyXpos = 100;
+        var enemyYpos = 100;
+        const ENEMY_SIZE = 1;
+        var enemyYspeed = 10;
+
+        //player goalie
+        var goalieXpos = 1000;
+        var goalieYpos = 100;
+        const GOALIE_SIZE = 1;
+        var goalieYspeed = 10;
+
+        //ball position and speed
+        var ballXpos = 1000;
+        var ballYpos = 930;
         const BALL_SIZE = 100;
         var ballXspeed = 5;
-        var ballYspeed = 5;
+        var ballYspeed = -10;
 
+        //opposition image
+        var enemy = new Image ();
+            enemy.src = 'images/enemy.png';
+
+        //ball image
         var ball = new Image ();
             ball.src = 'images/ball.png';
 
+        //player goalie image
+        var goalie = new Image ();
+            goalie.src = 'images/goalie.png';
+
+        //on window run (load function)
         function mainloop() {
-            colorRect(0,0,canvas.width,canvas.height,'green'); // bg
+            colorRect(0,0,canvas.width,canvas.height,'white'); 
+            drawImg(goalie ,goalieXpos,goalieYpos,GOALIE_SIZE,GOALIE_SIZE,)
             drawImg(ball ,ballXpos,ballYpos,BALL_SIZE,BALL_SIZE);
-    
+            colorRect(goalieXpos,goalieYpos,GOALIE_SIZE,GOALIE_SIZE);
+
             ballMove();
         }
-        
+        //background colour
          function colorRect(x,y,w,h,c){
             canvasContext.fillStyle = c;
             canvasContext.fillRect(x,y,w,h);
         }
+        //playergoalie draw function
+            function drawImg(goalie,goalieXpos,goalieYpos){
+        canvasContext.drawImage(goalieXpos,goalieYpos);
+            
+        }
         
+        //ball draw function
+            function drawImg(ball,ballXpos,ballYpos,BALL_SIZE,BALL_SIZE){
+        canvasContext.drawImage (src,x,y,w,h);
+
+        }
+            speed = 10;
+
+        //enemy draw function
             function drawImg(src,x,y,w,h,){
         canvasContext.drawImage (src,x,y,w,h);
 
         }
-
+        
+        // ball moce function
             function ballMove() {
                 ballXpos += ballXspeed;
                 ballYpos += ballYspeed;
