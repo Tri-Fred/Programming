@@ -9,15 +9,20 @@
 <body>
     <canvas id="gameCanvas" width="1910" height="930"></canvas> 
     <script>
-        var canvas, canvasContext;
+        var canvas;
+        var canvasContext;
 
         window.onload = function() {
             canvas = document.getElementById('gameCanvas');
             canvasContext = canvas.getContext('2d');
 
+            for(var i = 0; i <10; i++){
+                    
+                }
+
             setInterval(mainloop, 1000 / 50);
-            
-        }   
+            }
+
         //opposition goalie
         var enemyXpos = 100;
         var enemyYpos = 100;
@@ -31,11 +36,13 @@
         var goalieYspeed = 10;
 
         //ball position and speed
-        var ballXpos = 1000;
-        var ballYpos = 930;
+        var ballXpos = 1500;
+        var ballYpos = 0;
         const BALL_SIZE = 100;
-        var ballXspeed = 5;
+        var ballXspeed = 10;
         var ballYspeed = -10;
+
+        var middlelines = [];
 
         //opposition image
         var enemy = new Image ();
@@ -51,30 +58,57 @@
 
         //on window run (load function)
         function mainloop() {
-            colorRect(0,0,canvas.width,canvas.height,'white'); 
-            drawImg(goalie ,goalieXpos,goalieYpos,GOALIE_SIZE,GOALIE_SIZE,)
+            colorRect(0, 0, canvas.width, canvas.height,'white'); 
+            drawImg(goalie ,goalieXpos,goalieYpos,GOALIE_SIZE,GOALIE_SIZE,);
             drawImg(ball ,ballXpos,ballYpos,BALL_SIZE,BALL_SIZE);
             colorRect(goalieXpos,goalieYpos,GOALIE_SIZE,GOALIE_SIZE);
-
-            ballMove();
+            
+           ballMove();
+           drawlines();
         }
+        //lines or bouncing code
+        function drawlines(){
+            middlelines.forEach(function(line,i,array){
+                colorRect(line.lineXpos,line.lineYpos,line.WIDTH,line.HEIGHT,'white');
+            });
+        }
+
+        var linecount = 0;
+        function makelines() {
+            const WIDTH = 4;
+            const HEIGHT = 10;
+            const GAP = 5;
+            var lineXpos = canvas.width / 2 - WIDTH / 2;
+            var lineYpos = HEIGHT * linecount + linecount * GAP;
+            
+            linecount++;
+
+            var line = {
+                linexpos: lineXpos,
+                lineYpos: lineYpos,
+                WIDTH: WIDTH,
+                HEIGHT: HEIGHT,
+            }
+            middlelines.push(line);
+}
         //background colour
          function colorRect(x,y,w,h,c){
             canvasContext.fillStyle = c;
             canvasContext.fillRect(x,y,w,h);
         }
+  
         //playergoalie draw function
-            function drawImg(goalie,goalieXpos,goalieYpos){
+        function drawImg(goalie,goalieXpos,goalieYpos){
         canvasContext.drawImage(goalieXpos,goalieYpos);
             
         }
+        
         
         //ball draw function
             function drawImg(ball,ballXpos,ballYpos,BALL_SIZE,BALL_SIZE){
         canvasContext.drawImage (src,x,y,w,h);
 
         }
-            speed = 10;
 
         //enemy draw function
             function drawImg(src,x,y,w,h,){
@@ -82,11 +116,29 @@
 
         }
         
-        // ball moce function
+        // ball move function
             function ballMove() {
-                ballXpos += ballXspeed;
-                ballYpos += ballYspeed;
+                ballXpos = ballXpos + ballXspeed;
+                ballYpos = ballYpos + ballYspeed;
+
+                if(ballXpos > canvas.width - BALL_SIZE){
+                    ballXspeed *= -1;
+                }
+
+                if(ballXpos < 0 ){
+                    ballXspeed *= -1;
+                }
+
+                if(ballYpos > canvas.height - BALL_SIZE){
+                    ballYspeed *= -1;
+                }
+
+                if(ballYpos < 0 ){
+                    ballYspeed *= -1;
+                }
+            
+
     }
-    
+  
     </script>
 </body>
