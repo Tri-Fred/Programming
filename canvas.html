@@ -1,47 +1,138 @@
 <!doctype html>
+
+
+
+
+<title>Game</title>
+
+
 <body>
-    <canvas id="gameCanvas" width="600" height="600"></canvas>
+    <canvas id="gameCanvas" width="1910" height="930"></canvas> 
     <script>
-        var canvas, canvasContext;
+        var canvas;
+        var canvasContext;
 
         window.onload = function() {
             canvas = document.getElementById('gameCanvas');
             canvasContext = canvas.getContext('2d');
 
+            for(var i = 0; i <10; i++){
+                    
+                }
+
             setInterval(mainloop, 1000 / 50);
-            goalieMove();
+            }
+        
+        var middlelines = [];
+
+
+        //ball position and speed
+        var ballXpos = 100;
+        var ballYpos = 0;
+        const BALL_SIZE = 80;
+        var ballXspeed = 10;
+        var ballYspeed = -10;
+
+        const PLAYER_X_POS = 100;
+        var playerYpos = 0;
+        const PLAYER_WIDTH = 40;
+        const PLAYER_HEIGHT = 160;
+        var playerYspeed = 5;
+        
+    
+
+            //ball image
+        var ball = new Image ();
+            ball.src = 'images/ball.png';
+
+      
+
+        //on window run (load function)
+        function mainloop() {
+            colorRect(0, 0, canvas.width, canvas.height,'darkgreen'); 
+            colorRect(PLAYER_X_POS, playerYpos,PLAYER_WIDTH ,PLAYER_HEIGHT ,'red');
+            drawImg(ball ,ballXpos,ballYpos,BALL_SIZE,BALL_SIZE);
+ 
+
+           ballMove();
+           drawlines();
+        }
+        //lines for bouncing code
+        function drawlines(){
+            middlelines.forEach(function(line,i,array){
+                colorRect(line.lineXpos,line.lineYpos,line.WIDTH,line.HEIGHT,'white');
+            });
         }
 
-            var ballXpos = 100;
-            var ballYpos = 0;
-            const SIZE = 20;
-            var ballXSpeed = 5;
-            var ballYSpeed = 5;
-        
-        function mainloop() {
-            colorRect(0,0,canvas.width,canvas.height,'black'); // bg
-  
-        }
-        
+        var linecount = 0;
+        function makelines() {
+            const WIDTH = 4;
+            const HEIGHT = 10;
+            const GAP = 5;
+            const SIZE = 1;
+            var lineXpos = canvas.width / 2 - WIDTH / 2;
+            var lineYpos = HEIGHT * linecount + linecount * GAP;
+            
+            linecount++;
+
+            var line = {
+                linexpos: lineXpos,
+                lineYpos: lineYpos,
+                WIDTH: WIDTH,
+                HEIGHT: HEIGHT,
+            }
+            middlelines.push(line);
+}
+        //background colour
          function colorRect(x,y,w,h,c){
             canvasContext.fillStyle = c;
             canvasContext.fillRect(x,y,w,h);
         }
+  
+        //playergoalie draw function
+        function drawImg(playerGoalie,goalieXpos,goalieYpos){
+        canvasContext.drawImage(goalieXpos,goalieYpos);
+            
+        }
+        
 
-        function goalieMove() {
-            if (downKeyPressed) {
-                    goalieYpos += goalieYSpeed;
-                }
-                if (upKeyPressed) {
-                    goalieYpos -= goalieYSpeed;
-                }
+
+        //ball draw function
+            function drawImg(ball,ballXpos,ballYpos,BALL_SIZE,BALL_SIZE){
+        canvasContext.drawImage (src,x,y,w,h);
+
         }
 
+        //enemy draw function
+            function drawImg(src,x,y,w,h,){
+        canvasContext.drawImage (src,x,y,w,h);
 
+        }
 
+        
+        // ball move function
+            function ballMove() {
+                ballXpos = ballXpos + ballXspeed;
+                ballYpos = ballYpos + ballYspeed;
 
+                if(ballXpos > canvas.width - BALL_SIZE){
+                    ballXspeed *= -1;
+                }
 
+                if(ballXpos < 0 ){
+                    ballXspeed *= -1;
+                }
 
-    
+                if(ballYpos > canvas.height - BALL_SIZE){
+                    ballYspeed *= -1;
+                }
+
+                if(ballYpos < 0 ){
+                    ballYspeed *= -1;
+                }
+            
+
+    }
+  
     </script>
 </body>
