@@ -16,32 +16,56 @@
             canvas = document.getElementById('gameCanvas');
             canvasContext = canvas.getContext('2d');
 
+            document.addEventListener('keydown', keyPressed);
+            document.addEventListener('keyup', keyReleased);
+
             for(var i = 0; i <10; i++){
                     
                 }
 
             setInterval(mainloop, 1000 / 50);
+
             }
         
+        
+        var resetting = true;
+        var score = 0;
+        var AIscore = 0;
+
         var middlelines = [];
 
 
-        //ball position and speed
-        var ballXpos = 100;
+        //ball info
+        var ballXpos = 800;
         var ballYpos = 0;
         const BALL_SIZE = 80;
         var ballXspeed = 10;
         var ballYspeed = -10;
 
+        //playergoalie info
         const PLAYER_X_POS = 100;
-        var playerYpos = 0;
+        var playerYpos = 100;
         const PLAYER_WIDTH = 40;
         const PLAYER_HEIGHT = 160;
-        var playerYspeed = 5;
+        var playerYspeed = 10;
+        var playerXspeed = 0;
         
-    
+        //enemygoalie info
+        var enemyAIXpos = 1810;
+        var enemyAIYpos = 100;
+        const ENEMYAI_WIDTH = 40;
+        const ENEMYAI_HEIGHT = 160;
+        var enemyAIYspeed = 5;
+        var enemyAIXspeed = 0;
+            
+        //player moving on command 
+        const UP_KEY = 38;
+        const DOWN_KEY = 40;
+        var upKeyPressed = false;
+        var downKeyPressed = false;
 
-            //ball image
+
+        //ball image
         var ball = new Image ();
             ball.src = 'images/ball.png';
 
@@ -50,12 +74,23 @@
         //on window run (load function)
         function mainloop() {
             colorRect(0, 0, canvas.width, canvas.height,'darkgreen'); 
-            colorRect(PLAYER_X_POS, playerYpos,PLAYER_WIDTH ,PLAYER_HEIGHT ,'red');
+            colorRect(PLAYER_X_POS, playerYpos, PLAYER_WIDTH , PLAYER_HEIGHT,'blue');
+            colorRect(enemyAIXpos, enemyAIYpos, ENEMYAI_WIDTH, ENEMYAI_HEIGHT,'red');
             drawImg(ball ,ballXpos,ballYpos,BALL_SIZE,BALL_SIZE);
- 
 
-           ballMove();
-           drawlines();
+            colorText(50, 20, '20px arial', 'Score: ' + score, 'white');
+            colorText(canvas.width - 150, 20, '20px arial', 'AIScore:' + AIscore, 'white');
+
+ 
+            
+            ballMove();
+            playerMove();
+            enemyAImove();
+            drawlines();
+            if (resetting) {
+                    reset();
+                    resetting = false;
+                }
         }
         //lines for bouncing code
         function drawlines(){
@@ -63,13 +98,13 @@
                 colorRect(line.lineXpos,line.lineYpos,line.WIDTH,line.HEIGHT,'white');
             });
         }
-
+        //line for bounce code
         var linecount = 0;
+
         function makelines() {
             const WIDTH = 4;
             const HEIGHT = 10;
             const GAP = 5;
-            const SIZE = 1;
             var lineXpos = canvas.width / 2 - WIDTH / 2;
             var lineYpos = HEIGHT * linecount + linecount * GAP;
             
@@ -89,23 +124,13 @@
             canvasContext.fillRect(x,y,w,h);
         }
   
-        //playergoalie draw function
-        function drawImg(playerGoalie,goalieXpos,goalieYpos){
-        canvasContext.drawImage(goalieXpos,goalieYpos);
-            
-        }
+
         
 
 
         //ball draw function
             function drawImg(ball,ballXpos,ballYpos,BALL_SIZE,BALL_SIZE){
-        canvasContext.drawImage (src,x,y,w,h);
-
-        }
-
-        //enemy draw function
-            function drawImg(src,x,y,w,h,){
-        canvasContext.drawImage (src,x,y,w,h);
+        canvasContext.drawImage (ball,ballXpos,ballYpos,BALL_SIZE,BALL_SIZE);
 
         }
 
@@ -115,24 +140,96 @@
                 ballXpos = ballXpos + ballXspeed;
                 ballYpos = ballYpos + ballYspeed;
 
+                //ball bouncing off player goalie
+                if (ballXpos < PLAYER_X_POS + PLAYER_WIDTH && 
+                    ballYpos + BALL_SIZE > playerYpos &&
+                    ballYpos < playerYpos + PLAYER_HEIGHT) {
+                    ballXspeed *= -1;
+                }
+                //ball bouncing off enemy goalie
+                if (ballXpos + BALL_SIZE > enemyAIXpos &&
+                    ballYpos + BALL_SIZE > enemyAIYpos &&
+                    ballYpos < enemyAIYpos + ENEMYAI_HEIGHT) {
+                    ballXspeed *= -1;
+                }  
+                
+                //ball bouncing off right edge
                 if(ballXpos > canvas.width - BALL_SIZE){
                     ballXspeed *= -1;
                 }
 
+                //ball bouncing off left edge
                 if(ballXpos < 0 ){
                     ballXspeed *= -1;
                 }
 
+                //ball bouncing off bottom edge
                 if(ballYpos > canvas.height - BALL_SIZE){
                     ballYspeed *= -1;
                 }
 
+                //ball bouncing off top edge
                 if(ballYpos < 0 ){
                     ballYspeed *= -1;
                 }
+                
             
+            }
+            //player moving on command
+        function playerMove() {
+                if (downKeyPressed) {
+                    playerYpos += playerYspeed;
+                }
+                if (upKeyPressed) {
+                    playerYpos -= playerYspeed;
+                }
+            }
 
-    }
+            function keyPressed(evt) {
+                if (evt.keyCode == UP_KEY) {
+                    upKeyPressed = true;
+                }
+                if (evt.keyCode == DOWN_KEY) {
+                    downKeyPressed = true;
+                }
+            }
+
+
+            function keyReleased(evt) {
+                if (evt.keyCode == DOWN_KEY) {
+                    downKeyPressed = false;
+                }
+                if (evt.keyCode == UP_KEY) {
+                    upKeyPressed = false;
+                }
+            }
+            //AI following ball
+            function enemyAImove() {
+                if(ballYpos < enemyAIYpos + ENEMYAI_HEIGHT / 3) {
+                enemyAIYpos -= enemyAIYspeed;
+
+                }
+
+                if(ballYpos > enemyAIYpos + ENEMYAI_HEIGHT / 2) {
+                enemyAIYpos += enemyAIYspeed;                    
+                }
+            }   
+            //when hitting edge bal goes to middle
+            function reset() {
+                ballXpos = canvas.width / 2 - BALL_SIZE / 2;
+                ballYpos = canvas.height / 2 - BALL_SIZE / 2;
+                playerYpos = canvas.height / 2 - BALL_SIZE / 2;
+                enemyAIXpos = canvas.width - BALL_SIZE * 2;
+                AIscore = AIscore + 1;
+
+            }
+
+            function colorText(x, y, f, msg, c) {
+                canvasContext.fillText(msg, x, y);
+                canvasContext.fillStyle = c
+                canvasContext.font = f;
+            }
+
   
     </script>
 </body>
