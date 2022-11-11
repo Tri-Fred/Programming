@@ -1,0 +1,64 @@
+@font-face {
+    font-family: typewriter;
+    src: url(fonts/zai_pencil_typewriter/typwriter.ttf);
+    }
+body {
+    color:#ffffff;
+    background-color: #1bafdb;
+}
+
+#start, #game-over {
+    font-family:'typewriter';
+    color:#ffffff;
+    padding: 20px;
+    position:fixed;
+    top:50%;
+    left:50%;
+    margin-top: -100px;
+    margin-left: -100px;
+    height:200px;
+    width:250px;
+    text-align:center;
+}
+#start a, #game-over a {
+    border:3px solid #ffff;
+    color:#ffff;
+    text-decoration: none;
+    padding:10px;
+    border-radius:15px;
+    cursor:pointer;
+    display: block;
+    width:200px;
+    text-align:center;
+    font-size: 2em;
+    display: inline-block;
+}
+#start a:hover, #game-over a:hover { background-color: #ffffff; color:#1bafdb}
+
+nav {
+    font-family:'typewriter';
+    color:#ffffff;
+    padding: 20px;
+    position:fixed;
+    top:56%;
+    left:50%;
+    margin-top: -100px;
+    margin-left: -100px;
+    height:200px;
+    width:250px;
+    text-align:center;
+}
+nav a {
+    border:3px solid #ffff;
+    color:#ffff;
+    text-decoration: none;
+    padding:10px;
+    border-radius:15px;
+    cursor:pointer;
+    display: block;
+    width:200px;
+    text-align:center;
+    font-size: 2em;
+    display: inline-block;
+}
+nav a:hover {background-color: #ffffff; color:#1bafdb}
